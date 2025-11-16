@@ -1,5 +1,6 @@
 package com.hp.innovrex.showcase
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -28,16 +29,18 @@ internal fun ShowcaseContent(onClose: () -> Unit) {
 @Composable
 private fun ShowcaseScaffold(onClose: () -> Unit) {
     var selectedComponent by remember { mutableStateOf<ComponentItem?>(null) }
+    var sidebarCollapsed by remember { mutableStateOf(false) }
+    val targetWidth = if (sidebarCollapsed) 48.dp else 280.dp
+    val animatedWidth by animateDpAsState(targetValue = targetWidth)
 
     Row(Modifier.fillMaxSize()) {
-        // Left sidebar - Component list
         ComponentList(
-            modifier = Modifier.width(280.dp).fillMaxHeight(),
+            modifier = Modifier.width(animatedWidth).fillMaxHeight(),
             onComponentSelected = { selectedComponent = it },
-            selectedComponent = selectedComponent
+            selectedComponent = selectedComponent,
+            collapsed = sidebarCollapsed,
+            onToggleCollapse = { sidebarCollapsed = !sidebarCollapsed }
         )
-
-        // Right content - Component showcase
         Box(
             modifier = Modifier.weight(1f).fillMaxHeight()
                 .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -53,95 +56,81 @@ private fun ShowcaseScaffold(onClose: () -> Unit) {
 private fun ComponentList(
     modifier: Modifier = Modifier,
     onComponentSelected: (ComponentItem) -> Unit,
-    selectedComponent: ComponentItem?
+    selectedComponent: ComponentItem?,
+    collapsed: Boolean,
+    onToggleCollapse: () -> Unit
 ) {
     val spacing = LocalSpacing.current
-
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
-            .padding(spacing.md)
+            .padding(if (collapsed) 4.dp else spacing.md)
     ) {
-        Text(
-            "Design System Showcase",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = spacing.lg)
-        )
-
-        Divider(Modifier.padding(bottom = spacing.md))
-
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(spacing.xs)
+        // Header with collapse / expand toggle
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { onToggleCollapse() }
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(vertical = 8.dp, horizontal = if (collapsed) 0.dp else 12.dp),
+            contentAlignment = Alignment.Center
         ) {
-            item {
-                Text(
-                    "ATOMS",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = spacing.sm)
-                )
+            Text(
+                if (collapsed) ">" else "Design System Showcase",
+                style = if (collapsed) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                maxLines = 1
+            )
+        }
+        if (collapsed) {
+            Spacer(Modifier.height(12.dp))
+            // Render minimal vertical list of first letters for quick navigation
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxSize()) {
+                items(ComponentRegistry.atoms) { component ->
+                    CollapsedItem(shortLabel = component.name.first().uppercase(), isSelected = component == selectedComponent) {
+                        onComponentSelected(component)
+                    }
+                }
+                // We could add other categories similarly, but keep minimal for collapsed state
             }
-
-            items(ComponentRegistry.atoms) { component ->
-                ComponentListItem(
-                    component = component,
-                    isSelected = component == selectedComponent,
-                    onClick = { onComponentSelected(component) }
-                )
-            }
-
-            item {
-                Spacer(Modifier.height(spacing.md))
-                Text(
-                    "MOLECULES",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = spacing.sm)
-                )
-            }
-
-            items(ComponentRegistry.molecules) { component ->
-                ComponentListItem(
-                    component = component,
-                    isSelected = component == selectedComponent,
-                    onClick = { onComponentSelected(component) }
-                )
-            }
-
-            item {
-                Spacer(Modifier.height(spacing.md))
-                Text(
-                    "ORGANISMS",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = spacing.sm)
-                )
-            }
-
-            items(ComponentRegistry.organisms) { component ->
-                ComponentListItem(
-                    component = component,
-                    isSelected = component == selectedComponent,
-                    onClick = { onComponentSelected(component) }
-                )
-            }
-
-            item {
-                Spacer(Modifier.height(spacing.md))
-                Text(
-                    "TOKENS",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = spacing.sm)
-                )
-            }
-
-            items(ComponentRegistry.tokens) { component ->
-                ComponentListItem(
-                    component = component,
-                    isSelected = component == selectedComponent,
-                    onClick = { onComponentSelected(component) }
-                )
+        } else {
+            Divider(Modifier.padding(bottom = spacing.md))
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(spacing.xs)
+            ) {
+                item { SectionLabel("ATOMS") }
+                items(ComponentRegistry.atoms) { component ->
+                    ComponentListItem(
+                        component = component,
+                        isSelected = component == selectedComponent,
+                        onClick = { onComponentSelected(component) }
+                    )
+                }
+                item { Spacer(Modifier.height(spacing.md)); SectionLabel("MOLECULES") }
+                items(ComponentRegistry.molecules) { component ->
+                    ComponentListItem(
+                        component = component,
+                        isSelected = component == selectedComponent,
+                        onClick = { onComponentSelected(component) }
+                    )
+                }
+                item { Spacer(Modifier.height(spacing.md)); SectionLabel("ORGANISMS") }
+                items(ComponentRegistry.organisms) { component ->
+                    ComponentListItem(
+                        component = component,
+                        isSelected = component == selectedComponent,
+                        onClick = { onComponentSelected(component) }
+                    )
+                }
+                item { Spacer(Modifier.height(spacing.md)); SectionLabel("TOKENS") }
+                items(ComponentRegistry.tokens) { component ->
+                    ComponentListItem(
+                        component = component,
+                        isSelected = component == selectedComponent,
+                        onClick = { onComponentSelected(component) }
+                    )
+                }
             }
         }
     }
@@ -238,3 +227,33 @@ private fun EmptyState() {
     }
 }
 
+@Composable
+private fun SectionLabel(text: String) {
+    val spacing = LocalSpacing.current
+    Text(
+        text,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(vertical = spacing.sm)
+    )
+}
+
+@Composable
+private fun CollapsedItem(shortLabel: String, isSelected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .clip(RoundedCornerShape(6.dp))
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+            )
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            shortLabel,
+            style = MaterialTheme.typography.labelMedium,
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
