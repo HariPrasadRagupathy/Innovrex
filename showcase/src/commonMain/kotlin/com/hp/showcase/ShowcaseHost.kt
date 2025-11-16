@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
  * Host supplies a registry of showcase items (components, tokens, etc.).
  */
 
-interface ShowcaseItem {
+public interface ShowcaseItem {
     val id: String
     val name: String
     val description: String

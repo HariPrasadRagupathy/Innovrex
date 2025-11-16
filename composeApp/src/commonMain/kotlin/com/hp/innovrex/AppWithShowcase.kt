@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hp.innovrex.designsystem.theme.InnovrexTheme
 import com.hp.innovrex.showcase.DebugShowcaseLauncher
+import com.hp.innovrex.showcase.IS_DEBUG
 
 /**
  * Example integration of the Design System Showcase.
@@ -18,35 +19,13 @@ import com.hp.innovrex.showcase.DebugShowcaseLauncher
 
 @Composable
 fun AppWithShowcase() {
-    var showShowcase by remember { mutableStateOf(false) }
-
     InnovrexTheme {
-        if (showShowcase) {
-            // Fullscreen showcase
-            Surface(modifier = Modifier.fillMaxSize()) {
-                com.hp.innovrex.showcase.DesignSystemShowcase(
-                    onClose = { showShowcase = false }
-                )
-            }
-        } else {
-            Box(Modifier.fillMaxSize()) {
-                // Your main app content
-                MainAppContent()
+        Box(Modifier.fillMaxSize()) {
+            MainAppContent()
 
-                // Debug-only floating action button (bottom-right)
-                // Automatically hidden in release builds
+            if (IS_DEBUG) {
+                // Single debug launcher FAB (non-intrusive)
                 DebugShowcaseLauncher()
-
-                // TEMPORARY: Add a visible button for testing
-                FloatingActionButton(
-                    onClick = { showShowcase = true },
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(80.dp), // Offset from the other FAB
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ) {
-                    Text("🎨", style = MaterialTheme.typography.headlineMedium)
-                }
             }
         }
     }
@@ -57,9 +36,7 @@ fun AppWithShowcase() {
 private fun MainAppContent() {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Innovrex") }
-            )
+            TopAppBar(title = { Text("Innovrex") })
         }
     ) { padding ->
         Column(
@@ -70,10 +47,7 @@ private fun MainAppContent() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                "Welcome to Innovrex",
-                style = MaterialTheme.typography.headlineLarge
-            )
+            Text("Welcome to Innovrex", style = MaterialTheme.typography.headlineLarge)
 
             Spacer(Modifier.height(16.dp))
 
@@ -83,26 +57,18 @@ private fun MainAppContent() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            Spacer(Modifier.height(32.dp))
+            if (IS_DEBUG) {
+                Spacer(Modifier.height(32.dp))
 
-            Text(
-                "Design System Showcase:",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            Text(
-                "• Tap the 🎨 button in the bottom-right corner\n" +
-                "• Or click the button below",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                Text(
+                    "Design System Showcase (debug only): tap the 🎨 floating button in the bottom-right corner.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }
 
 // For Desktop/JVM: Separate window example
 // See ShowcaseWindow.kt in jvmMain for usage
-
