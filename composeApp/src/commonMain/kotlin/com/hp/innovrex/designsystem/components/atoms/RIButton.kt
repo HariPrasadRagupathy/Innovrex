@@ -1,4 +1,4 @@
-package com.hp.innovrex.components.atoms
+package com.hp.innovrex.designsystem.components.atoms
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
