@@ -21,13 +21,22 @@ import com.hp.innovrex.designsystem.tokens.foundation.LocalSpacing
 
 @Composable
 internal fun ShowcaseContent(onClose: () -> Unit) {
-    InnovrexTheme {
-        ShowcaseScaffold(onClose)
+    var darkTheme by remember { mutableStateOf(false) }
+    InnovrexTheme(darkTheme = darkTheme) {
+        ShowcaseScaffold(
+            onClose = onClose,
+            darkTheme = darkTheme,
+            onToggleDarkTheme = { darkTheme = !darkTheme }
+        )
     }
 }
 
 @Composable
-private fun ShowcaseScaffold(onClose: () -> Unit) {
+private fun ShowcaseScaffold(
+    onClose: () -> Unit,
+    darkTheme: Boolean,
+    onToggleDarkTheme: () -> Unit
+) {
     var selectedComponent by remember { mutableStateOf<ComponentItem?>(null) }
     var sidebarCollapsed by remember { mutableStateOf(false) }
     val targetWidth = if (sidebarCollapsed) 48.dp else 280.dp
@@ -39,7 +48,9 @@ private fun ShowcaseScaffold(onClose: () -> Unit) {
             onComponentSelected = { selectedComponent = it },
             selectedComponent = selectedComponent,
             collapsed = sidebarCollapsed,
-            onToggleCollapse = { sidebarCollapsed = !sidebarCollapsed }
+            onToggleCollapse = { sidebarCollapsed = !sidebarCollapsed },
+            darkTheme = darkTheme,
+            onToggleDarkTheme = onToggleDarkTheme
         )
         Box(
             modifier = Modifier.weight(1f).fillMaxHeight()
@@ -58,7 +69,9 @@ private fun ComponentList(
     onComponentSelected: (ComponentItem) -> Unit,
     selectedComponent: ComponentItem?,
     collapsed: Boolean,
-    onToggleCollapse: () -> Unit
+    onToggleCollapse: () -> Unit,
+    darkTheme: Boolean,
+    onToggleDarkTheme: () -> Unit
 ) {
     val spacing = LocalSpacing.current
     Column(
@@ -66,22 +79,56 @@ private fun ComponentList(
             .background(MaterialTheme.colorScheme.surface)
             .padding(if (collapsed) 4.dp else spacing.md)
     ) {
-        // Header with collapse / expand toggle
+        // Header with collapse / expand toggle + theme toggle
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
-                .clickable { onToggleCollapse() }
                 .background(MaterialTheme.colorScheme.primaryContainer)
-                .padding(vertical = 8.dp, horizontal = if (collapsed) 0.dp else 12.dp),
-            contentAlignment = Alignment.Center
+                .padding(vertical = 8.dp, horizontal = if (collapsed) 0.dp else 12.dp)
         ) {
-            Text(
-                if (collapsed) ">" else "Design System Showcase",
-                style = if (collapsed) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                maxLines = 1
-            )
+            if (collapsed) {
+                // Stacked small vertical actions
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    // Collapse toggle icon (uses text glyph)
+                    Text(
+                        text = ">",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.clickable { onToggleCollapse() }
+                    )
+                    Text(
+                        text = if (darkTheme) "☾" else "☀",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.clickable { onToggleDarkTheme() }
+                    )
+                }
+            } else {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        "Design System Showcase",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.clickable { onToggleCollapse() }
+                    )
+                    IconButton(onClick = onToggleDarkTheme) {
+                        Text(
+                            if (darkTheme) "☾" else "☀",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+            }
         }
         if (collapsed) {
             Spacer(Modifier.height(12.dp))
