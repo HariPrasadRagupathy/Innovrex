@@ -76,6 +76,9 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
+        // Add BuildConfig field for debug flag
+        buildConfigField("boolean", "DEBUG", "true")
     }
     packaging {
         resources {
@@ -85,11 +88,19 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            // Override DEBUG flag in release builds
+            buildConfigField("boolean", "DEBUG", "false")
+        }
+        getByName("debug") {
+            buildConfigField("boolean", "DEBUG", "true")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
