@@ -3,155 +3,25 @@ package com.hp.innovrex.components.atoms
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.hp.innovrex.designsystem.tokens.RIButtonDefaults
+import com.hp.innovrex.designsystem.tokens.RIButtonShape
+import com.hp.innovrex.designsystem.tokens.RIButtonSize
+import com.hp.innovrex.designsystem.tokens.RIButtonVariant
 import kotlinx.coroutines.flow.map
-
-// Brand color tokens (could be moved to a centralized theme file later)
-object BrandColors {
-    val RedPrimary = Color(0xFFD60000)
-    val RedPrimaryDark = Color(0xFF9E0000)
-    val RedPrimaryLight = Color(0xFFFF5252)
-    val OnRedPrimary = Color.White
-    val RedContainer = Color(0xFFFFE5E5)
-    val OnRedContainer = Color(0xFF410000)
-}
-
-// Variants
-sealed interface RIButtonVariant {
-    data object Filled : RIButtonVariant
-    data object Tonal : RIButtonVariant
-    data object Outlined : RIButtonVariant
-    data object Ghost : RIButtonVariant
-    data object Link : RIButtonVariant
-    data object Danger : RIButtonVariant // Explicit danger styling
-}
-
-// Shapes
-sealed interface RIButtonShape {
-    data object Rectangle : RIButtonShape
-    data object Rounded : RIButtonShape
-    data object Pill : RIButtonShape
-    data object Circle : RIButtonShape // For icon-only or circular
-}
-
-// Sizes
-sealed interface RIButtonSize {
-    data object Small : RIButtonSize
-    data object Medium : RIButtonSize
-    data object Large : RIButtonSize
-}
-
-// Color model for button states
-class RIButtonColors(
-    val containerColor: Color,
-    val contentColor: Color,
-    val borderColor: Color?,
-    val disabledContainerColor: Color,
-    val disabledContentColor: Color,
-    val stateLayerColor: Color
-)
-
-// Metrics model
-class RIButtonMetrics(
-    val height: Dp,
-    val horizontalPadding: Dp,
-    val cornerShape: Shape,
-    val textStyle: TextStyle,
-    val iconSize: Dp,
-    val spacing: Dp
-)
-
-object RIButtonDefaults {
-    @Composable
-    fun colors(variant: RIButtonVariant, enabled: Boolean): RIButtonColors {
-        val scheme = MaterialTheme.colorScheme
-        return when (variant) {
-            RIButtonVariant.Filled -> RIButtonColors(
-                containerColor = if (enabled) BrandColors.RedPrimary else scheme.surfaceVariant,
-                contentColor = if (enabled) BrandColors.OnRedPrimary else scheme.onSurface.copy(alpha = 0.38f),
-                borderColor = null,
-                disabledContainerColor = scheme.surfaceVariant,
-                disabledContentColor = scheme.onSurface.copy(alpha = 0.38f),
-                stateLayerColor = BrandColors.OnRedPrimary.copy(alpha = 0.12f)
-            )
-            RIButtonVariant.Tonal -> RIButtonColors(
-                containerColor = if (enabled) BrandColors.RedContainer else scheme.surfaceVariant,
-                contentColor = if (enabled) BrandColors.OnRedContainer else scheme.onSurface.copy(alpha = 0.38f),
-                borderColor = null,
-                disabledContainerColor = scheme.surfaceVariant,
-                disabledContentColor = scheme.onSurface.copy(alpha = 0.38f),
-                stateLayerColor = BrandColors.OnRedContainer.copy(alpha = 0.12f)
-            )
-            RIButtonVariant.Outlined -> RIButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = if (enabled) BrandColors.RedPrimary else scheme.onSurface.copy(alpha = 0.38f),
-                borderColor = if (enabled) BrandColors.RedPrimary else scheme.outline.copy(alpha = 0.38f),
-                disabledContainerColor = Color.Transparent,
-                disabledContentColor = scheme.onSurface.copy(alpha = 0.38f),
-                stateLayerColor = BrandColors.RedPrimary.copy(alpha = 0.12f)
-            )
-            RIButtonVariant.Ghost -> RIButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = if (enabled) BrandColors.RedPrimary else scheme.onSurface.copy(alpha = 0.38f),
-                borderColor = null,
-                disabledContainerColor = Color.Transparent,
-                disabledContentColor = scheme.onSurface.copy(alpha = 0.38f),
-                stateLayerColor = BrandColors.RedPrimary.copy(alpha = 0.08f)
-            )
-            RIButtonVariant.Link -> RIButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = if (enabled) BrandColors.RedPrimary else scheme.onSurface.copy(alpha = 0.38f),
-                borderColor = null,
-                disabledContainerColor = Color.Transparent,
-                disabledContentColor = scheme.onSurface.copy(alpha = 0.38f),
-                stateLayerColor = Color.Transparent
-            )
-            RIButtonVariant.Danger -> RIButtonColors(
-                containerColor = if (enabled) BrandColors.RedPrimaryDark else scheme.surfaceVariant,
-                contentColor = if (enabled) BrandColors.OnRedPrimary else scheme.onSurface.copy(alpha = 0.38f),
-                borderColor = null,
-                disabledContainerColor = scheme.surfaceVariant,
-                disabledContentColor = scheme.onSurface.copy(alpha = 0.38f),
-                stateLayerColor = BrandColors.OnRedPrimary.copy(alpha = 0.16f)
-            )
-        }
-    }
-
-    @Composable
-    fun metrics(size: RIButtonSize, shape: RIButtonShape): RIButtonMetrics {
-        return when (size) {
-            RIButtonSize.Small -> RIButtonMetrics(32.dp, 12.dp, rectangleShapeFor(shape, 32.dp), TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium), 16.dp, 6.dp)
-            RIButtonSize.Medium -> RIButtonMetrics(40.dp, 16.dp, rectangleShapeFor(shape, 40.dp), TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Medium), 20.dp, 8.dp)
-            RIButtonSize.Large -> RIButtonMetrics(48.dp, 20.dp, rectangleShapeFor(shape, 48.dp), TextStyle(fontSize = 16.sp, fontWeight = FontWeight.SemiBold), 24.dp, 10.dp)
-        }
-    }
-
-    private fun rectangleShapeFor(shape: RIButtonShape, height: Dp): Shape = when (shape) {
-        RIButtonShape.Rectangle -> RoundedCornerShape(0.dp)
-        RIButtonShape.Rounded -> RoundedCornerShape(8.dp)
-        RIButtonShape.Pill -> RoundedCornerShape(height / 2)
-        RIButtonShape.Circle -> CircleShape
-    }
-}
 
 @Composable
 fun RIButton(
