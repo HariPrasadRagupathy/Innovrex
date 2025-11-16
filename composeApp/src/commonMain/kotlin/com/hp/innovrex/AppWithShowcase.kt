@@ -7,11 +7,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hp.innovrex.designsystem.theme.InnovrexTheme
-import com.hp.innovrex.showcase.DesignSystemShowcase
+import com.hp.innovrex.showcase.DebugShowcaseLauncher
 
 /**
  * Example integration of the Design System Showcase.
  * This shows how to integrate the showcase into your app.
+ *
+ * Recommended approach: Use DebugShowcaseLauncher (non-intrusive FAB)
  */
 
 @Composable
@@ -21,33 +23,42 @@ fun AppWithShowcase() {
     InnovrexTheme {
         if (showShowcase) {
             // Fullscreen showcase
-            DesignSystemShowcase(
-                onClose = { showShowcase = false }
-            )
+            Surface(modifier = Modifier.fillMaxSize()) {
+                com.hp.innovrex.showcase.DesignSystemShowcase(
+                    onClose = { showShowcase = false }
+                )
+            }
         } else {
-            // Your main app content
-            MainAppContent(
-                onOpenShowcase = { showShowcase = true }
-            )
+            Box(Modifier.fillMaxSize()) {
+                // Your main app content
+                MainAppContent()
+
+                // Debug-only floating action button (bottom-right)
+                // Automatically hidden in release builds
+                DebugShowcaseLauncher()
+
+                // TEMPORARY: Add a visible button for testing
+                FloatingActionButton(
+                    onClick = { showShowcase = true },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(80.dp), // Offset from the other FAB
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Text("🎨", style = MaterialTheme.typography.headlineMedium)
+                }
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MainAppContent(onOpenShowcase: () -> Unit) {
+private fun MainAppContent() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Innovrex") },
-                actions = {
-                    // Debug-only showcase button
-                    if (com.hp.innovrex.showcase.IS_DEBUG) {
-                        IconButton(onClick = onOpenShowcase) {
-                            Text("🎨") // Or use an Icon
-                        }
-                    }
-                }
+                title = { Text("Innovrex") }
             )
         }
     ) { padding ->
@@ -72,21 +83,22 @@ private fun MainAppContent(onOpenShowcase: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            // Debug showcase button (visible in debug builds only)
-            if (com.hp.innovrex.showcase.IS_DEBUG) {
-                Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(32.dp))
 
-                Button(onClick = onOpenShowcase) {
-                    Text("Open Design System Showcase")
-                }
+            Text(
+                "Design System Showcase:",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
 
-                Text(
-                    "(Debug only - hidden in release)",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                "• Tap the 🎨 button in the bottom-right corner\n" +
+                "• Or click the button below",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

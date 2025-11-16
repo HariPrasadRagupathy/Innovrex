@@ -17,6 +17,9 @@ import com.hp.innovrex.designsystem.tokens.foundation.LocalSpacing
 import com.hp.innovrex.showcase.ComponentCategory
 import com.hp.innovrex.showcase.ComponentItem
 
+// Shared state instance that will be accessed by both preview and controls
+private var sharedButtonState: RIButtonShowcaseState? = null
+
 /**
  * RIButton showcase with interactive controls.
  */
@@ -24,14 +27,23 @@ val RIButtonShowcase = ComponentItem(
     name = "RIButton",
     description = "Multi-variant button component with support for different shapes, sizes, loading states, and icons.",
     category = ComponentCategory.ATOM,
-    preview = { RIButtonPreview() },
-    controls = { RIButtonControls() }
+    preview = {
+        // Create or reuse shared state
+        val state = remember {
+            sharedButtonState ?: RIButtonShowcaseState().also { sharedButtonState = it }
+        }
+        RIButtonPreview(state)
+    },
+    controls = {
+        // Use the shared state
+        sharedButtonState?.let { state ->
+            RIButtonControlsContent(state)
+        }
+    }
 )
 
 @Composable
-private fun RIButtonPreview() {
-    val state = remember { RIButtonShowcaseState() }
-
+private fun RIButtonPreview(state: RIButtonShowcaseState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -57,8 +69,7 @@ private fun RIButtonPreview() {
 }
 
 @Composable
-private fun RIButtonControls() {
-    val state = remember { RIButtonShowcaseState() }
+private fun RIButtonControlsContent(state: RIButtonShowcaseState) {
     val spacing = LocalSpacing.current
 
     Column(verticalArrangement = Arrangement.spacedBy(spacing.lg)) {

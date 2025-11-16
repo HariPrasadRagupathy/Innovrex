@@ -177,45 +177,48 @@ private fun ComponentListItem(
 
 @Composable
 private fun ComponentShowcaseView(component: ComponentItem) {
-    Column(Modifier.fillMaxSize()) {
-        // Preview area (top 60%)
-        Box(
-            modifier = Modifier
-                .weight(0.6f)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
-                .padding(32.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            component.preview()
-        }
-
-        // Controls area (bottom 40%)
-        Surface(
-            modifier = Modifier.weight(0.4f).fillMaxWidth(),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            tonalElevation = 2.dp
-        ) {
-            Column(
+    // Ensure stable composition for the component with key
+    key(component.name) {
+        Column(Modifier.fillMaxSize()) {
+            // Preview area (top 60%)
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(24.dp)
+                    .weight(0.6f)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(32.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    component.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                component.preview()
+            }
 
-                Text(
-                    component.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 24.dp)
-                )
+            // Controls area (bottom 40%)
+            Surface(
+                modifier = Modifier.weight(0.4f).fillMaxWidth(),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                tonalElevation = 2.dp
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(24.dp)
+                ) {
+                    Text(
+                        component.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
 
-                component.controls()
+                    Text(
+                        component.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(bottom = 24.dp)
+                    )
+
+                    component.controls()
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
-    InnovrexTheme {
+   /* InnovrexTheme {
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -26,5 +26,6 @@ fun App() {
         ) {
             Text("Hello, World!")
         }
-    }
+    }*/
+    AppWithShowcase()
 }
