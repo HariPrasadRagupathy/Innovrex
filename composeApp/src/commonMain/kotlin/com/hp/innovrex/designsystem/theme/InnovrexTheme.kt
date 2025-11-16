@@ -24,6 +24,14 @@ import com.hp.innovrex.designsystem.tokens.foundation.LocalStateLayers
 import com.hp.innovrex.designsystem.tokens.foundation.StateLayerOpacities
 import com.hp.innovrex.designsystem.tokens.foundation.LocalBreakpoints
 import com.hp.innovrex.designsystem.tokens.foundation.Breakpoints
+import com.hp.innovrex.designsystem.tokens.foundation.LocalTransitions
+import com.hp.innovrex.designsystem.tokens.foundation.TransitionTokens
+import com.hp.innovrex.designsystem.tokens.foundation.LocalGestures
+import com.hp.innovrex.designsystem.tokens.foundation.GestureTokens
+import com.hp.innovrex.designsystem.tokens.foundation.LocalZIndex
+import com.hp.innovrex.designsystem.tokens.foundation.ZIndexTokens
+import com.hp.innovrex.designsystem.tokens.foundation.LocalOpacity
+import com.hp.innovrex.designsystem.tokens.foundation.OpacityTokens
 
 @Composable
 fun InnovrexTheme(
@@ -38,6 +46,10 @@ fun InnovrexTheme(
     motion: MotionScale = MotionScale(),
     stateLayers: StateLayerOpacities = StateLayerOpacities(),
     breakpoints: Breakpoints = Breakpoints(),
+    transitions: TransitionTokens = TransitionTokens(),
+    gestures: GestureTokens = GestureTokens(),
+    zIndex: ZIndexTokens = ZIndexTokens(),
+    opacity: OpacityTokens = OpacityTokens(),
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
@@ -48,6 +60,10 @@ fun InnovrexTheme(
         LocalMotion provides motion,
         LocalStateLayers provides stateLayers,
         LocalBreakpoints provides breakpoints,
+        LocalTransitions provides transitions,
+        LocalGestures provides gestures,
+        LocalZIndex provides zIndex,
+        LocalOpacity provides opacity,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
