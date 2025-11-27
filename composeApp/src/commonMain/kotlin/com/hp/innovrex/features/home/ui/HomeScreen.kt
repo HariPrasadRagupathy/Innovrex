@@ -1,17 +1,22 @@
 package com.hp.innovrex.features.home.ui
 
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
+import com.hp.innovrex.core.nav.ui.TopNavBar
 import com.hp.innovrex.designsystem.utils.rememberScreenSize
-import com.hp.innovrex.features.home.ui.components.HeroSection
+import com.hp.innovrex.features.home.ui.components.*
+import kotlinx.coroutines.launch
 
 /**
- * Home screen with responsive layout
+ * Home screen with responsive layout and navigation
  * Main entry point for the landing page
  */
 @Composable
@@ -27,22 +32,106 @@ fun HomeScreen(
         val screenWidth = with(density) { maxWidth }
         val screenSize = rememberScreenSize(screenWidth)
 
-        // Scrollable content
-        androidx.compose.foundation.layout.Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            HeroSection(
-                screenSize = screenSize,
-                onExploreClick = onExploreClick,
-                onContactClick = onContactClick
-            )
+        // Scroll state for programmatic scrolling
+        val scrollState = rememberScrollState()
+        val coroutineScope = rememberCoroutineScope()
 
-            // Add more sections here as needed
-            // FeaturesSection()
-            // ServicesSection()
-            // ContactSection()
+        // Store section positions
+        val sectionPositions = remember { mutableStateMapOf<String, Float>() }
+
+        // Navbar height to offset scroll position
+        val navBarHeight = with(density) { 70.dp.toPx() }
+
+        // Handle navigation to sections
+        val onNavigate: (String) -> Unit = { sectionId ->
+            coroutineScope.launch {
+                val position = sectionPositions[sectionId] ?: 0f
+                // Offset by navbar height for sections below hero
+                val adjustedPosition = if (sectionId == "home") {
+                    0
+                } else {
+                    (position - navBarHeight).coerceAtLeast(0f).toInt()
+                }
+                scrollState.animateScrollTo(adjustedPosition)
+            }
+        }
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Scrollable content
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+            ) {
+                // Hero Section (Home)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["home"] = coordinates.positionInRoot().y
+                        }
+                ) {
+                    HeroSection(
+                        screenSize = screenSize,
+                        onExploreClick = { onNavigate("services") },
+                        onContactClick = { onNavigate("contact") }
+                    )
+                }
+
+                // Services Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["services"] = coordinates.positionInRoot().y
+                        }
+                ) {
+                    ServicesSection(screenSize = screenSize)
+                }
+
+                // Products Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["products"] = coordinates.positionInRoot().y
+                        }
+                ) {
+                    ProductsSection(screenSize = screenSize)
+                }
+
+                // About Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["about"] = coordinates.positionInRoot().y
+                        }
+                ) {
+                    AboutSection(screenSize = screenSize)
+                }
+
+                // Contact Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["contact"] = coordinates.positionInRoot().y
+                        }
+                ) {
+                    ContactSection(screenSize = screenSize)
+                }
+            }
+
+            // Fixed Top Navigation Bar
+            TopNavBar(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth(),
+                screenSize = screenSize,
+                onNavigate = onNavigate,
+                onCtaClick = { onNavigate("contact") }
+            )
         }
     }
 }
