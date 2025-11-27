@@ -4,6 +4,17 @@ import androidx.compose.runtime.Composable
 import com.hp.innovrex.showcase.components.RIButtonShowcase
 import com.hp.innovrex.showcase.tokens.ColorTokensShowcase
 import com.hp.innovrex.showcase.tokens.SpacingTokensShowcase
+import com.hp.innovrex.showcase.tokens.ShapeTokensShowcase
+import com.hp.innovrex.showcase.tokens.BorderTokensShowcase
+import com.hp.innovrex.showcase.tokens.TypographyTokensShowcase
+import com.hp.innovrex.showcase.tokens.ElevationTokensShowcase
+import com.hp.innovrex.showcase.tokens.MotionTokensShowcase
+import com.hp.innovrex.showcase.tokens.StateLayerTokensShowcase
+import com.hp.innovrex.showcase.tokens.OpacityTokensShowcase
+import com.hp.innovrex.showcase.tokens.BreakpointTokensShowcase
+import com.hp.innovrex.showcase.tokens.ZIndexTokensShowcase
+import com.hp.innovrex.showcase.tokens.GestureTokensShowcase
+import com.hp.innovrex.showcase.tokens.TransitionTokensShowcase
 
 /**
  * Represents a component in the showcase catalog.
@@ -44,7 +55,21 @@ object ComponentRegistry {
     val tokens: List<ComponentItem> = listOf(
         ColorTokensShowcase,
         SpacingTokensShowcase,
+        ShapeTokensShowcase,
+        BorderTokensShowcase,
+        TypographyTokensShowcase,
+        ElevationTokensShowcase,
+        MotionTokensShowcase,
+        StateLayerTokensShowcase,
+        OpacityTokensShowcase,
+        BreakpointTokensShowcase,
+        ZIndexTokensShowcase,
+        GestureTokensShowcase,
+        TransitionTokensShowcase,
         // Add more token showcases (Typography, Shapes, Motion, etc.)
     )
-}
 
+    private val tokensCheck = listOf(
+        com.hp.innovrex.showcase.tokens.ShapeTokensShowcase.name
+    )
+}
