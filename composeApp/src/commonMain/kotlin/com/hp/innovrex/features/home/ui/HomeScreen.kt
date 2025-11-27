@@ -17,6 +17,7 @@ import com.hp.innovrex.features.home.ui.components.ProductsSection
 import com.hp.innovrex.features.home.ui.components.ContactSection
 import com.hp.innovrex.features.aboutus.ui.AboutUsSection
 import com.hp.innovrex.features.services.ui.ServicesSection
+import com.hp.innovrex.features.techstack.ui.TechStackSection
 import kotlinx.coroutines.launch
 
 /**
@@ -109,6 +110,17 @@ fun HomeScreen(
                     }
             ) {
                 ServicesSection(screenSize = screenSize)
+            }
+
+            // Tech Stack Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["techstack"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                TechStackSection(screenSize = screenSize)
             }
 
             // Products Section

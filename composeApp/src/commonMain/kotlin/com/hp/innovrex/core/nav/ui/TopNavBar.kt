@@ -44,6 +44,7 @@ fun TopNavBar(
             NavItem("Home", "home"),
             NavItem("About", "about"),
             NavItem("Services", "services"),
+            NavItem("Tech Stack", "techstack"),
             NavItem("Products", "products"),
             NavItem("Contact", "contact")
         )
