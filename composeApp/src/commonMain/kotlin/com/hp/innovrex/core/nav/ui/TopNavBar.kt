@@ -42,9 +42,9 @@ fun TopNavBar(
     val navItems = remember {
         listOf(
             NavItem("Home", "home"),
+            NavItem("About", "about"),
             NavItem("Services", "services"),
             NavItem("Products", "products"),
-            NavItem("About", "about"),
             NavItem("Contact", "contact")
         )
     }

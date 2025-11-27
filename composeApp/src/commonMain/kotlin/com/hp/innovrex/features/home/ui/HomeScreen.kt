@@ -86,6 +86,17 @@ fun HomeScreen(
                 )
             }
 
+            // About Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["about"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                AboutUsSection(screenSize = screenSize)
+            }
+
             // Services Section
             Box(
                 modifier = Modifier
@@ -108,16 +119,6 @@ fun HomeScreen(
                 ProductsSection(screenSize = screenSize)
             }
 
-            // About Section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { coordinates ->
-                        sectionPositions["about"] = coordinates.positionInRoot().y
-                    }
-            ) {
-                AboutUsSection(screenSize = screenSize)
-            }
 
             // Contact Section
             Box(
