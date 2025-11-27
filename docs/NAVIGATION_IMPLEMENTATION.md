@@ -86,8 +86,8 @@ composeApp/src/commonMain/kotlin/com/hp/innovrex/
 │ rexinnov          ≡  │  ← Hamburger menu
 │ Built by Ideas.      │
 └──────────────────────┘
-
 When menu clicked:
+┌────────────────┐
 ┌──────────────────────┐
 │ rexinnov          ≡  │
 │ Built by Ideas.      │
@@ -100,8 +100,6 @@ When menu clicked:
 │    │[Get Started]│   │
 │    └─────────────┘   │
 └──────────────────────┘
-```
-
 ---
 
 ## 🔄 How Scrolling Works
@@ -233,6 +231,8 @@ Box(
 Edit `TopNavBar.kt` in the `Logo()` composable:
 
 ```kotlin
+Text(
+    text = "YOUR BRAND",  // Change here
 Column(
     verticalArrangement = Arrangement.Center
 ) {
@@ -255,23 +255,6 @@ Column(
         color = BrandColors.White.copy(alpha = 0.8f)
     )
 }
-```
-
-### Change CTA Button Text
-
-Edit `TopNavBar.kt`:
-
-```kotlin
-PrimaryButton(
-    text = "Your CTA Text",  // Change here
-    onClick = onCtaClick,
-    // ...
-)
-```
-
----
-
-## 📱 Responsive Behavior
 
 | Screen Size | Layout | Menu Style |
 |-------------|--------|------------|

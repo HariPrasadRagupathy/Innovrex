@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.hp.innovrex.core.nav.ui.TopNavBar
 import com.hp.innovrex.designsystem.utils.rememberScreenSize
 import com.hp.innovrex.features.home.ui.components.*
+import com.hp.innovrex.features.aboutus.ui.AboutUsSection
 import kotlinx.coroutines.launch
 
 /**
@@ -78,6 +79,17 @@ fun HomeScreen(
                     )
                 }
 
+                // About Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["about"] = coordinates.positionInRoot().y
+                        }
+                ) {
+                    AboutUsSection(screenSize = screenSize)
+                }
+
                 // Services Section
                 Box(
                     modifier = Modifier
@@ -98,17 +110,6 @@ fun HomeScreen(
                         }
                 ) {
                     ProductsSection(screenSize = screenSize)
-                }
-
-                // About Section
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { coordinates ->
-                            sectionPositions["about"] = coordinates.positionInRoot().y
-                        }
-                ) {
-                    AboutSection(screenSize = screenSize)
                 }
 
                 // Contact Section
