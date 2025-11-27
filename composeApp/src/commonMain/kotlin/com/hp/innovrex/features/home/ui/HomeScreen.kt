@@ -12,8 +12,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.hp.innovrex.core.nav.ui.TopNavBar
 import com.hp.innovrex.designsystem.utils.rememberScreenSize
-import com.hp.innovrex.features.home.ui.components.*
+import com.hp.innovrex.features.home.ui.components.HeroSection
+import com.hp.innovrex.features.home.ui.components.ProductsSection
+import com.hp.innovrex.features.home.ui.components.ContactSection
 import com.hp.innovrex.features.aboutus.ui.AboutUsSection
+import com.hp.innovrex.features.services.ui.ServicesSection
 import kotlinx.coroutines.launch
 
 /**

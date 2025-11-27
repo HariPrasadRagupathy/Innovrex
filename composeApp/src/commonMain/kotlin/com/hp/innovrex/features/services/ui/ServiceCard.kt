@@ -1,0 +1,190 @@
+package com.hp.innovrex.features.services.ui
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
+import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
+import com.hp.innovrex.designsystem.utils.ScreenSize
+
+/**
+ * Reusable Service Card Component
+ * Displays a service with image, title, description, and features
+ */
+@Composable
+fun ServiceCard(
+    title: String,
+    description: String,
+    features: List<ServiceFeature>,
+    imagePlaceholder: String,
+    screenSize: ScreenSize,
+    imageOnLeft: Boolean = true,
+    modifier: Modifier = Modifier
+) {
+    val isMobile = screenSize == ScreenSize.Mobile
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(BrandColors.White)
+            .padding(SpacingTokens.XXL)
+    ) {
+        if (isMobile) {
+            // Mobile: Stacked layout
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(SpacingTokens.XL)
+            ) {
+                ServiceImage(imagePlaceholder)
+                ServiceContent(title, description, features)
+            }
+        } else {
+            // Desktop: Side-by-side layout
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(SpacingTokens.Huge),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (imageOnLeft) {
+                    Box(modifier = Modifier.weight(1f)) {
+                        ServiceImage(imagePlaceholder)
+                    }
+                    Box(modifier = Modifier.weight(1f)) {
+                        ServiceContent(title, description, features)
+                    }
+                } else {
+                    Box(modifier = Modifier.weight(1f)) {
+                        ServiceContent(title, description, features)
+                    }
+                    Box(modifier = Modifier.weight(1f)) {
+                        ServiceImage(imagePlaceholder)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ServiceImage(placeholder: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1.2f)
+            .clip(RoundedCornerShape(12.dp))
+            .background(BrandColors.Gray100),
+        contentAlignment = Alignment.Center
+    ) {
+        // Placeholder with centered text
+        Text(
+            text = placeholder,
+            style = MaterialTheme.typography.bodyMedium,
+            color = BrandColors.Gray500
+        )
+    }
+}
+
+@Composable
+private fun ServiceContent(
+    title: String,
+    description: String,
+    features: List<ServiceFeature>
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(SpacingTokens.LG)
+    ) {
+        // Title
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
+            ),
+            color = BrandColors.Gray900
+        )
+
+        // Description
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontSize = 16.sp,
+                lineHeight = 24.sp
+            ),
+            color = BrandColors.Gray600
+        )
+
+        Spacer(modifier = Modifier.height(SpacingTokens.SM))
+
+        // Features list
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(SpacingTokens.LG)
+        ) {
+            features.forEach { feature ->
+                FeatureItem(feature)
+            }
+        }
+    }
+}
+
+@Composable
+private fun FeatureItem(feature: ServiceFeature) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(SpacingTokens.MD),
+        verticalAlignment = Alignment.Top
+    ) {
+        // Checkmark indicator
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(BrandColors.Red600.copy(alpha = 0.1f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "✓",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                ),
+                color = BrandColors.Red600
+            )
+        }
+
+        // Content
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(SpacingTokens.XS)
+        ) {
+            Text(
+                text = feature.title,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp
+                ),
+                color = BrandColors.Gray900
+            )
+            Text(
+                text = feature.description,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp
+                ),
+                color = BrandColors.Gray600
+            )
+        }
+    }
+}
+
