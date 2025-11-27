@@ -11,6 +11,7 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.hp.innovrex.core.nav.ui.TopNavBar
+import com.hp.innovrex.core.nav.ui.BottomNavBar
 import com.hp.innovrex.designsystem.utils.rememberScreenSize
 import com.hp.innovrex.features.home.ui.components.HeroSection
 import com.hp.innovrex.features.home.ui.components.ProductsSection
@@ -157,6 +158,13 @@ fun HomeScreen(
             ) {
                 ContactUsSection(screenSize = screenSize)
             }
+
+            // Bottom Navigation / Footer
+            BottomNavBar(
+                modifier = Modifier.fillMaxWidth(),
+                screenSize = screenSize,
+                onNavigate = onNavigate
+            )
         }
     }
 }
