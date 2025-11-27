@@ -57,82 +57,78 @@ fun HomeScreen(
             }
         }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Scrollable content
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-            ) {
-                // Hero Section (Home)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { coordinates ->
-                            sectionPositions["home"] = coordinates.positionInRoot().y
-                        }
-                ) {
-                    HeroSection(
-                        screenSize = screenSize,
-                        onExploreClick = { onNavigate("services") },
-                        onContactClick = { onNavigate("contact") }
-                    )
-                }
-
-                // About Section
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { coordinates ->
-                            sectionPositions["about"] = coordinates.positionInRoot().y
-                        }
-                ) {
-                    AboutUsSection(screenSize = screenSize)
-                }
-
-                // Services Section
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { coordinates ->
-                            sectionPositions["services"] = coordinates.positionInRoot().y
-                        }
-                ) {
-                    ServicesSection(screenSize = screenSize)
-                }
-
-                // Products Section
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { coordinates ->
-                            sectionPositions["products"] = coordinates.positionInRoot().y
-                        }
-                ) {
-                    ProductsSection(screenSize = screenSize)
-                }
-
-                // Contact Section
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { coordinates ->
-                            sectionPositions["contact"] = coordinates.positionInRoot().y
-                        }
-                ) {
-                    ContactSection(screenSize = screenSize)
-                }
-            }
-
-            // Fixed Top Navigation Bar
+        // Scrollable content
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+        ) {
+            // Top Navigation Bar
             TopNavBar(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 screenSize = screenSize,
                 onNavigate = onNavigate,
                 onCtaClick = { onNavigate("contact") }
             )
+
+            // Hero Section (Home)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["home"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                HeroSection(
+                    screenSize = screenSize,
+                    onExploreClick = { onNavigate("services") },
+                    onContactClick = { onNavigate("contact") }
+                )
+            }
+
+            // Services Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["services"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                ServicesSection(screenSize = screenSize)
+            }
+
+            // Products Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["products"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                ProductsSection(screenSize = screenSize)
+            }
+
+            // About Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["about"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                AboutUsSection(screenSize = screenSize)
+            }
+
+            // Contact Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["contact"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                ContactSection(screenSize = screenSize)
+            }
         }
     }
 }
