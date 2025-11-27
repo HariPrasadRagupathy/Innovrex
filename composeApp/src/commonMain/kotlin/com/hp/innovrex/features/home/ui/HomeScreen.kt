@@ -14,10 +14,11 @@ import com.hp.innovrex.core.nav.ui.TopNavBar
 import com.hp.innovrex.designsystem.utils.rememberScreenSize
 import com.hp.innovrex.features.home.ui.components.HeroSection
 import com.hp.innovrex.features.home.ui.components.ProductsSection
-import com.hp.innovrex.features.home.ui.components.ContactSection
 import com.hp.innovrex.features.aboutus.ui.AboutUsSection
 import com.hp.innovrex.features.services.ui.ServicesSection
 import com.hp.innovrex.features.techstack.ui.TechStackSection
+import com.hp.innovrex.features.whyrexinnov.ui.WhyRexinnovSection
+import com.hp.innovrex.features.contactus.ui.ContactUsSection
 import kotlinx.coroutines.launch
 
 /**
@@ -123,6 +124,17 @@ fun HomeScreen(
                 TechStackSection(screenSize = screenSize)
             }
 
+            // Why Rexinnov Section
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        sectionPositions["whyrexinnov"] = coordinates.positionInRoot().y
+                    }
+            ) {
+                WhyRexinnovSection(screenSize = screenSize)
+            }
+
             // Products Section
             Box(
                 modifier = Modifier
@@ -143,7 +155,7 @@ fun HomeScreen(
                         sectionPositions["contact"] = coordinates.positionInRoot().y
                     }
             ) {
-                ContactSection(screenSize = screenSize)
+                ContactUsSection(screenSize = screenSize)
             }
         }
     }

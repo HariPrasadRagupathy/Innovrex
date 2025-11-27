@@ -45,6 +45,7 @@ fun TopNavBar(
             NavItem("About", "about"),
             NavItem("Services", "services"),
             NavItem("Tech Stack", "techstack"),
+            NavItem("Why Rexinnov?", "whyrexinnov"),
             NavItem("Products", "products"),
             NavItem("Contact", "contact")
         )
