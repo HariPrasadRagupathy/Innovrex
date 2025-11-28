@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.home.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -19,6 +22,9 @@ import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import com.hp.innovrex.designsystem.utils.responsiveValue
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.hero_background
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Hero section component for the landing page
@@ -61,18 +67,15 @@ fun HeroSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        BrandColors.DarkBackground,
-                        BrandColors.DarkSurface,
-                        BrandColors.DarkBackground
-                    )
-                )
-            )
     ) {
-        // Decorative background elements (simulating the network pattern)
-        BackgroundPattern()
+
+            Image(
+                painter = painterResource(Res.drawable.hero_background),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+
 
         // Main content
         Column(
@@ -185,41 +188,5 @@ fun HeroSection(
             }
         }
     }
-}
-
-/**
- * Background pattern component
- * Creates a subtle network/grid pattern effect
- */
-@Composable
-private fun BoxScope.BackgroundPattern() {
-    // Add decorative red dots and lines (simplified version)
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        BrandColors.Red900.copy(alpha = 0.1f),
-                        Color.Transparent
-                    ),
-                    center = androidx.compose.ui.geometry.Offset(0.2f, 0.3f)
-                )
-            )
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        BrandColors.Red800.copy(alpha = 0.15f),
-                        Color.Transparent
-                    ),
-                    center = androidx.compose.ui.geometry.Offset(0.8f, 0.6f)
-                )
-            )
-    )
 }
 
