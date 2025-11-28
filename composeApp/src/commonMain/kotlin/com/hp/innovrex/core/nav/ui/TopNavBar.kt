@@ -62,7 +62,7 @@ fun TopNavBar(
                     desktop = SpacingTokens.Giant,
                     screenSize = screenSize
                 ),
-                vertical = SpacingTokens.LG
+                vertical = SpacingTokens.SM
             )
     ) {
         Row(
@@ -76,7 +76,7 @@ fun TopNavBar(
             if (isDesktop) {
                 // Desktop Navigation
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(SpacingTokens.XL),
+                    horizontalArrangement = Arrangement.spacedBy(SpacingTokens.MD),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     navItems.forEach { item ->
@@ -89,7 +89,7 @@ fun TopNavBar(
                     PrimaryButton(
                         text = "Get Started",
                         onClick = onCtaClick,
-                        modifier = Modifier.height(40.dp)
+                        modifier = Modifier.height(32.dp)
                     )
                 }
             } else {

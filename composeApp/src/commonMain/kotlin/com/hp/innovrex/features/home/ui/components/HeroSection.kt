@@ -146,13 +146,13 @@ fun HeroSection(
                     PrimaryButton(
                         text = "Explore Our Solutions",
                         onClick = onExploreClick,
-                        modifier = Modifier.widthIn(min = 200.dp)
+                        modifier = Modifier.widthIn(min = 200.dp).height(48.dp)
                     )
 
                     SecondaryButton(
                         text = "Contact Us",
                         onClick = onContactClick,
-                        modifier = Modifier.widthIn(min = 160.dp)
+                        modifier = Modifier.widthIn(min = 160.dp).height(48.dp)
                     )
                 }
             } else {
@@ -170,6 +170,7 @@ fun HeroSection(
                         modifier = Modifier
                             .fillMaxWidth()
                             .widthIn(max = 400.dp)
+                            .height(48.dp)
                     )
 
                     SecondaryButton(
@@ -178,6 +179,7 @@ fun HeroSection(
                         modifier = Modifier
                             .fillMaxWidth()
                             .widthIn(max = 400.dp)
+                            .height(48.dp)
                     )
                 }
             }

@@ -47,7 +47,7 @@ fun HomeScreen(
         val sectionPositions = remember { mutableStateMapOf<String, Float>() }
 
         // Navbar height to offset scroll position
-        val navBarHeight = with(density) { 70.dp.toPx() }
+        val navBarHeight = with(density) { 56.dp.toPx() }
 
         // Handle navigation to sections
         val onNavigate: (String) -> Unit = { sectionId ->
