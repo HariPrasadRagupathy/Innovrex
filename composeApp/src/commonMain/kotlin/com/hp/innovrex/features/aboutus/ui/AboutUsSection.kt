@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.aboutus.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -16,6 +18,9 @@ import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import com.hp.innovrex.designsystem.utils.responsiveValue
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.aboutus
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * About Us Section Component
@@ -137,20 +142,13 @@ private fun AboutUsContent() {
 
 @Composable
 private fun TeamImage(modifier: Modifier = Modifier) {
-    Box(
+    Image(
+        painter = painterResource(Res.drawable.aboutus),
+        contentDescription = "Team collaboration image",
         modifier = modifier
             .aspectRatio(1.5f)
-            .clip(RoundedCornerShape(16.dp))
-            .background(BrandColors.Gray200),
-        contentAlignment = Alignment.Center
-    ) {
-        // Placeholder for team image
-        // TODO: Add actual team collaboration image resource
-        Text(
-            text = "Team Collaboration Image",
-            style = MaterialTheme.typography.bodyMedium,
-            color = BrandColors.Gray600
-        )
-    }
+            .clip(RoundedCornerShape(16.dp)),
+        contentScale = ContentScale.Crop
+    )
 }
 

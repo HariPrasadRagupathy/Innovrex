@@ -15,6 +15,10 @@ import androidx.compose.ui.unit.sp
 import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.consulting
+import innovrex.composeapp.generated.resources.crossplatform
+import innovrex.composeapp.generated.resources.customsoftware
 
 /**
  * Cross-Platform App Development Service Card
@@ -29,7 +33,7 @@ fun CrossPlatformAppDevelopmentCard(screenSize: ScreenSize) {
             ServiceFeature("Desktop Apps", "Create powerful desktop applications that work beautifully on Windows, macOS, and Linux"),
             ServiceFeature("Web Applications", "Develop responsive and modern web applications sharing logic with mobile and desktop apps")
         ),
-        imagePlaceholder = "Devices Illustration",
+        image = Res.drawable.crossplatform,
         screenSize = screenSize,
         imageOnLeft = true
     )
@@ -48,7 +52,7 @@ fun CustomSoftwareSolutionsCard(screenSize: ScreenSize) {
             ServiceFeature("API & Backend Integration", "Seamlessly integrate your multiplatform apps with backend services, third-party APIs, using Ktor and Kotlin for unified tech stack"),
             ServiceFeature("Secure Data Handling", "Ensure your users' data is protected with best-in-class encryption and secure coding standards")
         ),
-        imagePlaceholder = "Security Illustration",
+        image = Res.drawable.customsoftware,
         screenSize = screenSize,
         imageOnLeft = false
     )
@@ -67,7 +71,7 @@ fun ConsultingArchitectureCard(screenSize: ScreenSize) {
             ServiceFeature("Performance & Scalability", "Optimize your applications for superior performance and ensure they scale efficiently as your user base grows"),
             ServiceFeature("Migration to KMP", "Migrate your existing native iOS and Android apps to a unified Kotlin Multiplatform architecture")
         ),
-        imagePlaceholder = "Consulting Illustration",
+        image = Res.drawable.consulting,
         screenSize = screenSize,
         imageOnLeft = true
     )

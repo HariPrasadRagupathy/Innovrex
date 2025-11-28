@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.services.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,12 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.aboutus
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Reusable Service Card Component
@@ -25,7 +31,7 @@ fun ServiceCard(
     title: String,
     description: String,
     features: List<ServiceFeature>,
-    imagePlaceholder: String,
+    image: DrawableResource,
     screenSize: ScreenSize,
     imageOnLeft: Boolean = true,
     modifier: Modifier = Modifier
@@ -45,7 +51,7 @@ fun ServiceCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(SpacingTokens.XL)
             ) {
-                ServiceImage(imagePlaceholder)
+                ServiceImage(image)
                 ServiceContent(title, description, features)
             }
         } else {
@@ -57,7 +63,7 @@ fun ServiceCard(
             ) {
                 if (imageOnLeft) {
                     Box(modifier = Modifier.weight(1f)) {
-                        ServiceImage(imagePlaceholder)
+                        ServiceImage(image)
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         ServiceContent(title, description, features)
@@ -67,7 +73,7 @@ fun ServiceCard(
                         ServiceContent(title, description, features)
                     }
                     Box(modifier = Modifier.weight(1f)) {
-                        ServiceImage(imagePlaceholder)
+                        ServiceImage(image)
                     }
                 }
             }
@@ -76,7 +82,7 @@ fun ServiceCard(
 }
 
 @Composable
-private fun ServiceImage(placeholder: String) {
+private fun ServiceImage(image: DrawableResource, contentDescription : String = "Service image") {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,10 +92,13 @@ private fun ServiceImage(placeholder: String) {
         contentAlignment = Alignment.Center
     ) {
         // Placeholder with centered text
-        Text(
-            text = placeholder,
-            style = MaterialTheme.typography.bodyMedium,
-            color = BrandColors.Gray500
+        Image(
+            painter = painterResource(image),
+            contentDescription = "Team collaboration image",
+            modifier = Modifier
+                .aspectRatio(1.5f)
+                .clip(RoundedCornerShape(16.dp)),
+            contentScale = ContentScale.Crop
         )
     }
 }
