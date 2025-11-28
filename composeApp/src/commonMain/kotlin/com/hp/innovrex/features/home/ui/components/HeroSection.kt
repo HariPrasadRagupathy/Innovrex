@@ -1,6 +1,5 @@
 package com.hp.innovrex.features.home.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -8,10 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -22,9 +18,6 @@ import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import com.hp.innovrex.designsystem.utils.responsiveValue
-import innovrex.composeapp.generated.resources.Res
-import innovrex.composeapp.generated.resources.hero_background
-import org.jetbrains.compose.resources.painterResource
 
 /**
  * Hero section component for the landing page
@@ -49,10 +42,10 @@ fun HeroSection(
     )
 
     val verticalPadding = responsiveValue(
-        mobile = SpacingTokens.XXL,
-        tablet = SpacingTokens.Huge,
-        desktop = 120.dp,
-        wide = 160.dp,
+        mobile = SpacingTokens.XL,
+        tablet = SpacingTokens.XXL,
+        desktop = SpacingTokens.Huge,
+        wide = 80.dp,
         screenSize = screenSize
     )
 
@@ -67,16 +60,8 @@ fun HeroSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .background(Color.Black)
     ) {
-
-            Image(
-                painter = painterResource(Res.drawable.hero_background),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-
-
         // Main content
         Column(
             modifier = Modifier
