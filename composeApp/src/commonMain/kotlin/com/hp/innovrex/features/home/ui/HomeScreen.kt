@@ -7,7 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.hp.innovrex.core.nav.ui.TopNavBar
@@ -53,7 +53,7 @@ fun HomeScreen(
         val onNavigate: (String) -> Unit = { sectionId ->
             coroutineScope.launch {
                 val position = sectionPositions[sectionId] ?: 0f
-                // Offset by navbar height for sections below hero
+                // Position is now relative to parent (Column), just subtract navbar height
                 val adjustedPosition = if (sectionId == "home") {
                     0
                 } else {
@@ -63,43 +63,39 @@ fun HomeScreen(
             }
         }
 
-        // Scrollable content
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-        ) {
-            // Top Navigation Bar
-            TopNavBar(
-                modifier = Modifier.fillMaxWidth(),
-                screenSize = screenSize,
-                onNavigate = onNavigate,
-                onCtaClick = { onNavigate("contact") }
-            )
-
-            // Hero Section (Home)
-            Box(
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Scrollable content
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { coordinates ->
-                        sectionPositions["home"] = coordinates.positionInRoot().y
-                    }
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
             ) {
-                HeroSection(
-                    screenSize = screenSize,
-                    onExploreClick = { onNavigate("services") },
-                    onContactClick = { onNavigate("contact") }
-                )
-            }
+                // Add spacer for navbar height
+                Spacer(modifier = Modifier.height(56.dp))
 
-            // About Section
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { coordinates ->
-                        sectionPositions["about"] = coordinates.positionInRoot().y
-                    }
-            ) {
+                // Hero Section (Home)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["home"] = coordinates.positionInParent().y
+                        }
+                ) {
+                    HeroSection(
+                        screenSize = screenSize,
+                        onExploreClick = { onNavigate("services") },
+                        onContactClick = { onNavigate("contact") }
+                    )
+                }
+
+                // About Section
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            sectionPositions["about"] = coordinates.positionInParent().y
+                        }
+                ) {
                 AboutUsSection(screenSize = screenSize)
             }
 
@@ -108,7 +104,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
-                        sectionPositions["services"] = coordinates.positionInRoot().y
+                        sectionPositions["services"] = coordinates.positionInParent().y
                     }
             ) {
                 ServicesSection(screenSize = screenSize)
@@ -119,7 +115,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
-                        sectionPositions["techstack"] = coordinates.positionInRoot().y
+                        sectionPositions["techstack"] = coordinates.positionInParent().y
                     }
             ) {
                 TechStackSection(screenSize = screenSize)
@@ -130,7 +126,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
-                        sectionPositions["whyrexinnov"] = coordinates.positionInRoot().y
+                        sectionPositions["whyrexinnov"] = coordinates.positionInParent().y
                     }
             ) {
                 WhyRexinnovSection(screenSize = screenSize)
@@ -141,7 +137,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
-                        sectionPositions["products"] = coordinates.positionInRoot().y
+                        sectionPositions["products"] = coordinates.positionInParent().y
                     }
             ) {
                 ProductsSection(screenSize = screenSize)
@@ -153,7 +149,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
-                        sectionPositions["contact"] = coordinates.positionInRoot().y
+                        sectionPositions["contact"] = coordinates.positionInParent().y
                     }
             ) {
                 ContactUsSection(screenSize = screenSize)
@@ -166,6 +162,16 @@ fun HomeScreen(
                 onNavigate = onNavigate
             )
         }
+
+        // Sticky Top Navigation Bar (overlay)
+        TopNavBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter),
+            screenSize = screenSize,
+            onNavigate = onNavigate,
+            onCtaClick = { onNavigate("contact") }
+        )
     }
 }
-
+}
