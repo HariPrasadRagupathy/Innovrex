@@ -46,8 +46,28 @@ fun HomeScreen(
         // Store section positions
         val sectionPositions = remember { mutableStateMapOf<String, Float>() }
 
+        // Track current active section based on scroll position
+        var currentSection by remember { mutableStateOf("home") }
+
         // Navbar height to offset scroll position
         val navBarHeight = with(density) { 56.dp.toPx() }
+
+        // Update current section based on scroll position
+        LaunchedEffect(scrollState.value) {
+            val scrollPos = scrollState.value.toFloat()
+
+            val sections = listOf("home", "about", "services", "techstack", "whyrexinnov", "products", "contact")
+            var newSection = "home"
+
+            for (section in sections) {
+                val position = sectionPositions[section] ?: continue
+                if (scrollPos + navBarHeight >= position) {
+                    newSection = section
+                }
+            }
+
+            currentSection = newSection
+        }
 
         // Handle navigation to sections
         val onNavigate: (String) -> Unit = { sectionId ->
@@ -169,6 +189,7 @@ fun HomeScreen(
                 .fillMaxWidth()
                 .align(Alignment.TopCenter),
             screenSize = screenSize,
+            currentSection = currentSection,
             onNavigate = onNavigate,
             onCtaClick = { onNavigate("contact") }
         )

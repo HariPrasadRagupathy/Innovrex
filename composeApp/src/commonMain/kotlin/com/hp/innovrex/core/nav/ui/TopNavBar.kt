@@ -2,12 +2,17 @@ package com.hp.innovrex.core.nav.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +38,7 @@ data class NavItem(
 fun TopNavBar(
     modifier: Modifier = Modifier,
     screenSize: ScreenSize = ScreenSize.Desktop,
+    currentSection: String = "home",
     onNavigate: (String) -> Unit = {},
     onCtaClick: () -> Unit = {}
 ) {
@@ -82,6 +88,7 @@ fun TopNavBar(
                     navItems.forEach { item ->
                         NavMenuItem(
                             label = item.label,
+                            isActive = currentSection == item.sectionId,
                             onClick = { onNavigate(item.sectionId) }
                         )
                     }
@@ -201,20 +208,45 @@ private fun Logo() {
 
 /**
  * Navigation menu item (text link)
+ * With hover effect and active state
  */
 @Composable
 private fun NavMenuItem(
     label: String,
+    isActive: Boolean = false,
     onClick: () -> Unit
 ) {
-    Text(
-        text = label,
-        style = MaterialTheme.typography.bodyLarge,
-        color = BrandColors.Gray900,
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHovered by interactionSource.collectIsHoveredAsState()
+
+    val backgroundColor = when {
+        isActive -> BrandColors.Red600.copy(alpha = 0.1f)
+        isHovered -> BrandColors.Gray100
+        else -> BrandColors.White
+    }
+
+    val textColor = if (isActive) BrandColors.Red600 else BrandColors.Gray900
+
+    Box(
         modifier = Modifier
-            .clickable(onClick = onClick)
+            .clip(RoundedCornerShape(8.dp))
+            .background(backgroundColor)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            )
+            .hoverable(interactionSource = interactionSource)
             .padding(vertical = SpacingTokens.SM, horizontal = SpacingTokens.MD)
-    )
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal
+            ),
+            color = textColor
+        )
+    }
 }
 
 /**
