@@ -1,26 +1,45 @@
 package com.hp.innovrex.core.nav.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.hp.innovrex.designsystem.components.PrimaryButton
 import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import com.hp.innovrex.designsystem.utils.responsiveValue
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.logo
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Navigation item data class
@@ -77,7 +96,7 @@ fun TopNavBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Logo
-            Logo()
+            Logo(screenSize)
 
             if (isDesktop) {
                 // Desktop Navigation
@@ -133,77 +152,20 @@ fun TopNavBar(
  * Displays the red blob shape with white text
  */
 @Composable
-private fun Logo() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(SpacingTokens.XS)
-    ) {
-        // Red blob background with text overlay
-        Box(
-            modifier = Modifier
-                .width(140.dp)
-                .height(56.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            // Background blob shape (simplified rounded rectangle for now)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = BrandColors.Red600,
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
-                            topStart = 28.dp,
-                            topEnd = 40.dp,
-                            bottomStart = 40.dp,
-                            bottomEnd = 28.dp
-                        )
-                    )
-            )
+private fun Logo(screenSize: ScreenSize = ScreenSize.Desktop) {
+    val logoHeight = responsiveValue(
+        mobile = 48.dp,
+        tablet = 56.dp,
+        desktop = 100.dp,
+        screenSize = screenSize
+    )
 
-            // Logo text and tagline
-            Column(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Main logo text "rexinnov"
-                Text(
-                    text = "rexinnov",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        letterSpacing = (-0.3).sp
-                    ),
-                    color = BrandColors.White
-                )
-
-                // Tagline
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "Built by Ideas.",
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 7.sp,
-                            letterSpacing = 0.sp,
-                            fontWeight = FontWeight.Normal
-                        ),
-                        color = BrandColors.White.copy(alpha = 0.95f)
-                    )
-                    Text(
-                        text = "Driven by Passion.",
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 7.sp,
-                            letterSpacing = 0.sp,
-                            fontWeight = FontWeight.Normal
-                        ),
-                        color = BrandColors.White.copy(alpha = 0.95f)
-                    )
-                }
-            }
-        }
-    }
+    Image(
+        painter = painterResource(Res.drawable.logo),
+        contentDescription = "Rexinnov Logo",
+        modifier = Modifier.height(logoHeight),
+        contentScale = ContentScale.Fit
+    )
 }
 
 /**
