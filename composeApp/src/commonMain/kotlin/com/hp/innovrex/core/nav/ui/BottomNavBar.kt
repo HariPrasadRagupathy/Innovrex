@@ -47,7 +47,7 @@ fun BottomNavBar(
         modifier = modifier
             .fillMaxWidth()
             .background(BrandColors.DarkBackground)
-            .padding(horizontal = padding, vertical = SpacingTokens.Huge)
+            .padding(horizontal = padding, vertical = SpacingTokens.LG)
     ) {
         // Main Footer Content
         if (isMobile) {
@@ -58,7 +58,7 @@ fun BottomNavBar(
             DesktopFooterLayout(onNavigate)
         }
 
-        Spacer(modifier = Modifier.height(SpacingTokens.XXL))
+        Spacer(modifier = Modifier.height(SpacingTokens.LG))
 
         // Copyright
         CopyrightSection()
