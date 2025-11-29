@@ -83,21 +83,16 @@ fun ContactInformationCard() {
 
         Spacer(modifier = Modifier.height(SpacingTokens.XL))
 
-        // Network Image Placeholder
-        Box(
+        // Network Image
+        Image(
+            painter = painterResource(Res.drawable.contact_us_image),
+            contentDescription = "Global Network",
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1.4f)
-                .clip(RoundedCornerShape(12.dp))
-                .background(BrandColors.DarkBackground),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "🌐 Global Network",
-                style = MaterialTheme.typography.titleMedium,
-                color = BrandColors.White
-            )
-        }
+                .aspectRatio(2.5f)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
