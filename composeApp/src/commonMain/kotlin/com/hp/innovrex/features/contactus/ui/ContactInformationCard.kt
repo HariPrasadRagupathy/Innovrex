@@ -1,8 +1,10 @@
 package com.hp.innovrex.features.contactus.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,11 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
+import innovrex.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Contact Information Card
@@ -54,7 +60,7 @@ fun ContactInformationCard() {
 
         // Contact Details
         ContactDetail(
-            icon = "✉️",
+            icon = Res.drawable.email_icon,
             label = "Email Us",
             value = "contact@rexinnov.com"
         )
@@ -62,7 +68,7 @@ fun ContactInformationCard() {
         Spacer(modifier = Modifier.height(SpacingTokens.LG))
 
         ContactDetail(
-            icon = "📞",
+            icon = Res.drawable.phone_icon,
             label = "Call Us",
             value = "+1 (555) 123-4567"
         )
@@ -70,7 +76,7 @@ fun ContactInformationCard() {
         Spacer(modifier = Modifier.height(SpacingTokens.LG))
 
         ContactDetail(
-            icon = "📍",
+            icon = Res.drawable.location_icon,
             label = "Our Location",
             value = "Global Services"
         )
@@ -97,7 +103,7 @@ fun ContactInformationCard() {
 
 @Composable
 private fun ContactDetail(
-    icon: String,
+    icon: DrawableResource,
     label: String,
     value: String
 ) {
@@ -110,15 +116,16 @@ private fun ContactDetail(
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(CircleShape)
                 .background(BrandColors.Red600.copy(alpha = 0.1f)),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = icon,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = 20.sp
-                )
+            Image(
+                painter = painterResource(icon),
+                contentDescription = label,
+                modifier = Modifier
+                    .size(18.dp),
+                contentScale = ContentScale.Fit
             )
         }
 
