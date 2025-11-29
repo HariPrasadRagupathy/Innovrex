@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.techstack.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
+import innovrex.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Technology List Component
@@ -138,8 +142,8 @@ fun SupportedPlatforms() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(SpacingTokens.LG)
             ) {
-                PlatformCard("Android", modifier = Modifier.weight(1f))
-                PlatformCard("iOS", modifier = Modifier.weight(1f))
+                PlatformCard("Android", Res.drawable.android_logo, modifier = Modifier.weight(1f))
+                PlatformCard("iOS", Res.drawable.apple_logo, modifier = Modifier.weight(1f))
             }
 
             // Row 2
@@ -147,15 +151,15 @@ fun SupportedPlatforms() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(SpacingTokens.LG)
             ) {
-                PlatformCard("Windows", modifier = Modifier.weight(1f))
-                PlatformCard("Web", modifier = Modifier.weight(1f))
+                PlatformCard("Windows", Res.drawable.windows_logo, modifier = Modifier.weight(1f))
+                PlatformCard("Web", Res.drawable.web_logo, modifier = Modifier.weight(1f))
             }
         }
     }
 }
 
 @Composable
-private fun PlatformCard(platformName: String, modifier: Modifier = Modifier) {
+private fun PlatformCard(platformName: String, platformLogo: DrawableResource, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .aspectRatio(2.5f)
@@ -169,12 +173,13 @@ private fun PlatformCard(platformName: String, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(SpacingTokens.SM)
         ) {
-            // Platform icon placeholder
-            Box(
+            // Platform icon
+            Image(
+                painter = painterResource(platformLogo),
+                contentDescription = "$platformName logo",
                 modifier = Modifier
                     .size(24.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(BrandColors.Gray300)
             )
 
             Text(
