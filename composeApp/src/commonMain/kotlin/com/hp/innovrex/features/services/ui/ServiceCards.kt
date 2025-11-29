@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.services.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,8 +19,10 @@ import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import innovrex.composeapp.generated.resources.Res
 import innovrex.composeapp.generated.resources.consulting
+import innovrex.composeapp.generated.resources.correct
 import innovrex.composeapp.generated.resources.crossplatform
 import innovrex.composeapp.generated.resources.customsoftware
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Cross-Platform App Development Service Card
@@ -155,13 +159,11 @@ private fun TrainingFeatureItem(text: String) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(SpacingTokens.SM)
     ) {
-        Text(
-            text = "✓",
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Bold
-            ),
-            color = BrandColors.Red600,
-            modifier = Modifier.size(20.dp)
+        Image(
+            painter = painterResource(Res.drawable.correct),
+            contentDescription = "Check mark",
+            modifier = Modifier.size(20.dp),
+            contentScale = ContentScale.Fit
         )
         Text(
             text = text,
