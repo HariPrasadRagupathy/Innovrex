@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.whyrexinnov.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,11 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.codeIcon
+import innovrex.composeapp.generated.resources.correct
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Codebase Advantages Card
@@ -74,20 +80,14 @@ private fun AdvantageCard(
             horizontalArrangement = Arrangement.spacedBy(SpacingTokens.MD)
         ) {
             // Icon
-            Box(
+            Image(
+                painter = painterResource(Res.drawable.codeIcon),
+                contentDescription = "Team collaboration image",
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(BrandColors.Red600.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = icon,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontSize = 24.sp
-                    )
-                )
-            }
+                    .clip(RoundedCornerShape(50)),
+                contentScale = ContentScale.Fit
+            )
 
             // Title
             Text(
@@ -125,22 +125,14 @@ private fun AdvantageItem(text: String) {
         verticalAlignment = Alignment.Top
     ) {
         // Checkmark
-        Box(
+        Image(
+            painter = painterResource(Res.drawable.correct),
+            contentDescription = "Checkmark",
             modifier = Modifier
                 .size(24.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(BrandColors.Red600.copy(alpha = 0.2f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "✓",
-                style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
-                ),
-                color = BrandColors.Red400
-            )
-        }
+                .clip(RoundedCornerShape(50)),
+            contentScale = ContentScale.Fit
+        )
 
         // Text
         Text(
