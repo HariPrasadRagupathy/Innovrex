@@ -20,6 +20,9 @@ import com.hp.innovrex.designsystem.utils.ScreenSize
 import innovrex.composeapp.generated.resources.Res
 import innovrex.composeapp.generated.resources.consulting
 import innovrex.composeapp.generated.resources.correct
+import innovrex.composeapp.generated.resources.cross_desktop_icon
+import innovrex.composeapp.generated.resources.cross_mobile_icon
+import innovrex.composeapp.generated.resources.cross_web_icon
 import innovrex.composeapp.generated.resources.crossplatform
 import innovrex.composeapp.generated.resources.customsoftware
 import org.jetbrains.compose.resources.painterResource
@@ -33,9 +36,9 @@ fun CrossPlatformAppDevelopmentCard(screenSize: ScreenSize) {
         title = "Cross-Platform App Development",
         description = "We build applications with a single, shared codebase that delivers a native-like user experience and feel across all platforms, reducing costs and the time to market.",
         features = listOf(
-            ServiceFeature("Mobile Apps", "Build feature-rich and robust mobile apps for both Android and iOS with Kotlin Multiplatform"),
-            ServiceFeature("Desktop Apps", "Create powerful desktop applications that work beautifully on Windows, macOS, and Linux"),
-            ServiceFeature("Web Applications", "Develop responsive and modern web applications sharing logic with mobile and desktop apps")
+            ServiceFeature("Mobile Apps", "Build feature-rich and robust mobile apps for both Android and iOS with Kotlin Multiplatform", Res.drawable.cross_mobile_icon),
+            ServiceFeature("Desktop Apps", "Create powerful desktop applications that work beautifully on Windows, macOS, and Linux", Res.drawable.cross_desktop_icon),
+            ServiceFeature("Web Applications", "Develop responsive and modern web applications sharing logic with mobile and desktop apps", Res.drawable.cross_web_icon)
         ),
         image = Res.drawable.crossplatform,
         screenSize = screenSize,
@@ -180,6 +183,7 @@ private fun TrainingFeatureItem(text: String) {
  */
 data class ServiceFeature(
     val title: String,
-    val description: String
+    val description: String,
+    val icon: org.jetbrains.compose.resources.DrawableResource? = null
 )
 

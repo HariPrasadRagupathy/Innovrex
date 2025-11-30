@@ -18,7 +18,7 @@ import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import innovrex.composeapp.generated.resources.Res
-import innovrex.composeapp.generated.resources.aboutus
+import innovrex.composeapp.generated.resources.correct
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -154,21 +154,19 @@ private fun FeatureItem(feature: ServiceFeature) {
         horizontalArrangement = Arrangement.spacedBy(SpacingTokens.MD),
         verticalAlignment = Alignment.Top
     ) {
-        // Checkmark indicator
+        // Icon indicator
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(50.dp))
                 .background(BrandColors.Red600.copy(alpha = 0.1f)),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "✓",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                ),
-                color = BrandColors.Red600
+            Image(
+                painter = painterResource(feature.icon ?: Res.drawable.correct),
+                contentDescription = feature.title,
+                modifier = Modifier.size(20.dp),
+                contentScale = ContentScale.Fit
             )
         }
 
