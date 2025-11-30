@@ -18,12 +18,18 @@ import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.designsystem.utils.ScreenSize
 import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.consult_arch_icon
+import innovrex.composeapp.generated.resources.consult_migration_icon
+import innovrex.composeapp.generated.resources.consult_performance_icon
 import innovrex.composeapp.generated.resources.consulting
 import innovrex.composeapp.generated.resources.correct
 import innovrex.composeapp.generated.resources.cross_desktop_icon
 import innovrex.composeapp.generated.resources.cross_mobile_icon
 import innovrex.composeapp.generated.resources.cross_web_icon
 import innovrex.composeapp.generated.resources.crossplatform
+import innovrex.composeapp.generated.resources.custom_api_icon
+import innovrex.composeapp.generated.resources.custom_data_icon
+import innovrex.composeapp.generated.resources.custom_enterprise_icon
 import innovrex.composeapp.generated.resources.customsoftware
 import org.jetbrains.compose.resources.painterResource
 
@@ -55,9 +61,9 @@ fun CustomSoftwareSolutionsCard(screenSize: ScreenSize) {
         title = "Custom Software Solutions",
         description = "From idea to final delivery, we develop customized, scalable software solutions with Kotlin Multiplatform that perfectly align with your unique business needs and goals.",
         features = listOf(
-            ServiceFeature("Enterprise-Grade Applications", "Build robust and secure applications designed for enterprise needs, with scalability, maintainability, and performance at the core"),
-            ServiceFeature("API & Backend Integration", "Seamlessly integrate your multiplatform apps with backend services, third-party APIs, using Ktor and Kotlin for unified tech stack"),
-            ServiceFeature("Secure Data Handling", "Ensure your users' data is protected with best-in-class encryption and secure coding standards")
+            ServiceFeature("Enterprise-Grade Applications", "Build robust and secure applications designed for enterprise needs, with scalability, maintainability, and performance at the core", Res.drawable.custom_enterprise_icon),
+            ServiceFeature("API & Backend Integration", "Seamlessly integrate your multiplatform apps with backend services, third-party APIs, using Ktor and Kotlin for unified tech stack", Res.drawable.custom_api_icon),
+            ServiceFeature("Secure Data Handling", "Ensure your users' data is protected with best-in-class encryption and secure coding standards", Res.drawable.custom_data_icon)
         ),
         image = Res.drawable.customsoftware,
         screenSize = screenSize,
@@ -74,9 +80,9 @@ fun ConsultingArchitectureCard(screenSize: ScreenSize) {
         title = "Consulting & Architecture",
         description = "Our expert-grade Kotlin Multiplatform architects and consultants can help you plan, design, and execute your cross-platform strategy, accelerating time-to-market and ensuring long-term success.",
         features = listOf(
-            ServiceFeature("Application Architecture Setup", "Design robust and scalable application architectures following best practices for Kotlin Multiplatform projects"),
-            ServiceFeature("Performance & Scalability", "Optimize your applications for superior performance and ensure they scale efficiently as your user base grows"),
-            ServiceFeature("Migration to KMP", "Migrate your existing native iOS and Android apps to a unified Kotlin Multiplatform architecture")
+            ServiceFeature("Application Architecture Setup", "Design robust and scalable application architectures following best practices for Kotlin Multiplatform projects", Res.drawable.consult_arch_icon),
+            ServiceFeature("Performance & Scalability", "Optimize your applications for superior performance and ensure they scale efficiently as your user base grows", Res.drawable.consult_performance_icon),
+            ServiceFeature("Migration to KMP", "Migrate your existing native iOS and Android apps to a unified Kotlin Multiplatform architecture", Res.drawable.consult_migration_icon)
         ),
         image = Res.drawable.consulting,
         screenSize = screenSize,
