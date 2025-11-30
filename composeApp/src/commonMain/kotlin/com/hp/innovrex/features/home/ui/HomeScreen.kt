@@ -56,6 +56,12 @@ fun HomeScreen(
         LaunchedEffect(scrollState.value) {
             val scrollPos = scrollState.value.toFloat()
 
+            // Only update if sections are available
+            if (sectionPositions.isEmpty()) {
+                currentSection = "home"
+                return@LaunchedEffect
+            }
+
             val sections = listOf("home", "about", "services", "techstack", "whyrexinnov", "products", "contact")
             var newSection = "home"
 
