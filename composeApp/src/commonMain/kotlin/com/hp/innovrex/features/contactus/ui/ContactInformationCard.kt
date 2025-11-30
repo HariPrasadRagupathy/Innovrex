@@ -62,7 +62,7 @@ fun ContactInformationCard() {
         ContactDetail(
             icon = Res.drawable.email_icon,
             label = "Email Us",
-            value = "contact@rexinnov.com"
+            value = "info@rexinnov.com"
         )
 
         Spacer(modifier = Modifier.height(SpacingTokens.LG))
@@ -70,7 +70,7 @@ fun ContactInformationCard() {
         ContactDetail(
             icon = Res.drawable.phone_icon,
             label = "Call Us",
-            value = "+1 (555) 123-4567"
+            value = "+91 9994998079"
         )
 
         Spacer(modifier = Modifier.height(SpacingTokens.LG))
