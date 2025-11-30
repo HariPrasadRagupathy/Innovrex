@@ -153,7 +153,7 @@ fun HomeScreen(
             }
 
             // Products Section
-            Box(
+           /* Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
@@ -161,7 +161,7 @@ fun HomeScreen(
                     }
             ) {
                 ProductsSection(screenSize = screenSize)
-            }
+            }*/
 
 
             // Contact Section
