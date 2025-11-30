@@ -3,10 +3,12 @@ package com.hp.innovrex.features.contactus.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -24,8 +26,11 @@ import com.hp.innovrex.designsystem.tokens.foundation.BrandColors
 import com.hp.innovrex.designsystem.tokens.foundation.SpacingTokens
 import com.hp.innovrex.features.contactus.service.EmailData
 import com.hp.innovrex.features.contactus.service.sendContactEmail
+import innovrex.composeapp.generated.resources.Res
+import innovrex.composeapp.generated.resources.correct
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * Contact Form Component
@@ -157,17 +162,39 @@ fun ContactForm() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp))
-                    .background(BrandColors.Red600.copy(alpha = 0.1f))
+                    .background(BrandColors.Green50)
+                    .border(1.dp, BrandColors.Green500.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
                     .padding(SpacingTokens.MD)
             ) {
-                Text(
-                    text = "✓ Message sent successfully! We'll get back to you soon.",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp
-                    ),
-                    color = BrandColors.Red600
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(SpacingTokens.SM),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Green checkmark circle
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clip(CircleShape)
+                            .background(BrandColors.Green600),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(Res.drawable.correct),
+                            contentDescription = "Success",
+                            tint = BrandColors.White,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+
+                    Text(
+                        text = "Message sent successfully! We'll get back to you soon.",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp
+                        ),
+                        color = BrandColors.Green700
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(SpacingTokens.LG))
         }

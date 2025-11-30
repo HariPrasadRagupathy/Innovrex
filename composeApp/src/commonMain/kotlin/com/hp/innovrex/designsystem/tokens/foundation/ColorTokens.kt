@@ -23,6 +23,13 @@ object BrandColors {
     val DarkRed = Color(0xFF8B0000)
     val CrimsonRed = Color(0xFFDC143C)
 
+    // Green colors for success states
+    val Green50 = Color(0xFFE8F5E9)
+    val Green100 = Color(0xFFC8E6C9)
+    val Green500 = Color(0xFF4CAF50)
+    val Green600 = Color(0xFF43A047)
+    val Green700 = Color(0xFF388E3C)
+
     // Neutral colors
     val White = Color(0xFFFFFFFF)
     val Black = Color(0xFF000000)
