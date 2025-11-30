@@ -1,17 +1,22 @@
 package com.hp.innovrex.features.contactus.service
 
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.*
+
 /**
- * Email Service for sending contact form submissions
- *
- * Integration options:
- * 1. EmailJS - Client-side email sending service
- * 2. Backend API - Send to your own backend endpoint
- * 3. Firebase Functions - Serverless email sending
+ * Email Service for sending contact form submissions via EmailJS
  */
 
 /**
  * Data class for email content
  */
+@Serializable
 data class EmailData(
     val fullName: String,
     val email: String,
@@ -20,92 +25,77 @@ data class EmailData(
 )
 
 /**
- * Send email using your preferred service
+ * EmailJS Configuration
+ * Replace these with your actual EmailJS credentials
+ */
+private object EmailJSConfig {
+    const val SERVICE_ID = "service_9dcxbjn"  // Replace with your EmailJS Service ID
+    const val TEMPLATE_ID = "template_wwrvwq9"  // Replace with your EmailJS Template ID
+    const val PUBLIC_KEY = "gzXsWJdlnT8G5go2j"  // Replace with your EmailJS Public Key
+}
+
+/**
+ * Send email using EmailJS service
  *
  * @param emailData The email content to send
- * @return True if email sent successfully, false otherwise
+ * @return Result indicating success or failure
  */
 suspend fun sendContactEmail(emailData: EmailData): Result<Unit> {
-    return try {
-        // TODO: Implement actual email sending
-        // Option 1: EmailJS (https://www.emailjs.com/)
-        // sendViaEmailJS(emailData)
-
-        // Option 2: Your Backend API
-        // sendViaBackendAPI(emailData)
-
-        // Option 3: Firebase Functions
-        // sendViaFirebase(emailData)
-
-        // For now, simulate success
-        println("Email sent from: ${emailData.fullName} (${emailData.email})")
-        println("Subject: ${emailData.subject}")
-        println("Message: ${emailData.message}")
-
-        Result.success(Unit)
-    } catch (e: Exception) {
-        Result.failure(e)
-    }
-}
-
-/**
- * Example: EmailJS Integration
- * Add this dependency: implementation("io.ktor:ktor-client-core:2.3.7")
- */
-/*
-suspend fun sendViaEmailJS(emailData: EmailData): Result<Unit> {
     return withContext(Dispatchers.Default) {
         try {
             val client = HttpClient()
+
+            // Build the JSON payload for EmailJS
+            val jsonPayload = buildJsonObject {
+                put("service_id", EmailJSConfig.SERVICE_ID)
+                put("template_id", EmailJSConfig.TEMPLATE_ID)
+                put("user_id", EmailJSConfig.PUBLIC_KEY)
+                putJsonObject("template_params") {
+                    put("from_name", emailData.fullName)
+                    put("from_email", emailData.email)
+                    put("subject", emailData.subject)
+                    put("message", emailData.message)
+                    put("to_email", "rexinnov@gmail.com") // Your receiving email
+                }
+            }
+
+            // Debug: Print the payload (remove in production)
+            println("📧 Sending email via EmailJS...")
+            println("Service ID: ${EmailJSConfig.SERVICE_ID}")
+            println("Template ID: ${EmailJSConfig.TEMPLATE_ID}")
+            println("Public Key: ${EmailJSConfig.PUBLIC_KEY}")
+
+            // Send POST request to EmailJS API
             val response = client.post("https://api.emailjs.com/api/v1.0/email/send") {
                 contentType(ContentType.Application.Json)
-                setBody(json {
-                    put("service_id", "YOUR_SERVICE_ID")
-                    put("template_id", "YOUR_TEMPLATE_ID")
-                    put("user_id", "YOUR_PUBLIC_KEY")
-                    put("template_params", json {
-                        put("from_name", emailData.fullName)
-                        put("from_email", emailData.email)
-                        put("subject", emailData.subject)
-                        put("message", emailData.message)
-                    })
-                })
+                setBody(jsonPayload.toString())
             }
 
+            val responseBody = response.bodyAsText()
+
+            client.close()
+
+            // Check response status
             if (response.status.isSuccess()) {
+                println("✓ Email sent successfully via EmailJS")
+                println("Response: $responseBody")
                 Result.success(Unit)
             } else {
-                Result.failure(Exception("Failed to send email"))
+                val errorMessage = "Failed to send email: ${response.status}"
+                println("✗ $errorMessage")
+                println("Response Body: $responseBody")
+                println("\n🔍 Troubleshooting:")
+                println("1. Verify your Public Key in EmailJS dashboard (Account > General)")
+                println("2. Check that Service ID '${ EmailJSConfig.SERVICE_ID}' is active")
+                println("3. Check that Template ID '${EmailJSConfig.TEMPLATE_ID}' exists")
+                println("4. Ensure no domain restrictions in EmailJS settings")
+                Result.failure(Exception(errorMessage))
             }
         } catch (e: Exception) {
+            println("✗ Email sending error: ${e.message}")
+            println("Stack trace: ${e.stackTraceToString()}")
             Result.failure(e)
         }
     }
 }
-*/
-
-/**
- * Example: Backend API Integration
- */
-/*
-suspend fun sendViaBackendAPI(emailData: EmailData): Result<Unit> {
-    return withContext(Dispatchers.Default) {
-        try {
-            val client = HttpClient()
-            val response = client.post("https://your-api.com/contact") {
-                contentType(ContentType.Application.Json)
-                setBody(emailData)
-            }
-
-            if (response.status.isSuccess()) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Failed to send email"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-}
-*/
 
