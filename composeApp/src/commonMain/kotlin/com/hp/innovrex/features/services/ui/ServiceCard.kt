@@ -91,14 +91,13 @@ private fun ServiceImage(image: DrawableResource, contentDescription : String = 
             .background(BrandColors.Gray100),
         contentAlignment = Alignment.Center
     ) {
-        // Placeholder with centered text
         Image(
             painter = painterResource(image),
-            contentDescription = "Team collaboration image",
+            contentDescription = "Service image",
             modifier = Modifier
-                .aspectRatio(1.5f)
-                .clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Crop
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            contentScale = ContentScale.FillBounds
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.hp.innovrex.features.home.ui.components
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -7,6 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -60,25 +63,62 @@ fun HeroSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.Black)
+            .heightIn(min = responsiveValue(
+                mobile = 500.dp,
+                tablet = 600.dp,
+                desktop = 700.dp,
+                wide = 800.dp,
+                screenSize = screenSize
+            ))
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF0A0A0A),
+                        Color.Black,
+                        Color.Black
+                    )
+                )
+            ),
+        contentAlignment = Alignment.Center
     ) {
+        // Background pattern
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val dotSpacing = 40f
+            val dotRadius = 1.5f
+            val dotColor = Color.White.copy(alpha = 0.08f)
+
+            val columns = (size.width / dotSpacing).toInt()
+            val rows = (size.height / dotSpacing).toInt()
+
+            for (i in 0..columns) {
+                for (j in 0..rows) {
+                    val x = i * dotSpacing
+                    val y = j * dotSpacing
+                    drawCircle(
+                        color = dotColor,
+                        radius = dotRadius,
+                        center = Offset(x, y)
+                    )
+                }
+            }
+        }
+
         // Main content
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = horizontalPadding, vertical = verticalPadding)
-                .align(Alignment.Center),
+                .padding(horizontal = horizontalPadding, vertical = verticalPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Main headline
             Text(
-                text = "Kotlin Multiplatform Software Solutions",
+                text = "Full-Stack Multiplatform Product Development",
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontSize = responsiveValue(
                         mobile = 32.sp,
                         tablet = 45.sp,
                         desktop = 57.sp,
-                        wide = 72.sp,
+                        wide = 68.sp,
                         screenSize = screenSize
                     ),
                     fontWeight = FontWeight.Bold,
@@ -99,7 +139,7 @@ fun HeroSection(
 
             // Subtitle
             Text(
-                text = "One codebase, multiple platforms. We build seamless, high-performance applications for mobile, web, and desktop.",
+                text = "One Kotlin codebase, multiple experiences. We build high-performance mobile, web, desktop, and server REST API solutions.",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontSize = responsiveValue(
                         mobile = 16.sp,
